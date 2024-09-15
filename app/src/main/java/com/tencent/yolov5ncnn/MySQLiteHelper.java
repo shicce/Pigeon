@@ -10,11 +10,6 @@ import java.util.LinkedList;
 import androidx.annotation.Nullable;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
-    public class Pigeon {
-        public int id;
-        public String blood;
-        public String base64;
-    }
 
     private static final String DATABASE_NAME = "pigeon.db";
     private static final int DATABASE_VERSION = 1;
