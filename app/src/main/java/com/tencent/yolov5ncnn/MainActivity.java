@@ -17,8 +17,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
@@ -48,46 +53,60 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        try {
-            initializeDataBase();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        MySQLiteHelper sqlHelper = new MySQLiteHelper(this);
+//        try {
+//            initializeDataBase();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } catch (NoSuchFieldException e) {
+//            throw new RuntimeException(e);
+//        } catch (IllegalAccessException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
-    private void initializeDataBase() throws IOException{
+    private void initializeDataBase() throws IOException, NoSuchFieldException, IllegalAccessException {
         SharedPreferences sharedPreferences = getSharedPreferences("DBPref", MODE_PRIVATE);
-        sharedPreferences.getBoolean("isInit", false);
+        boolean isInit = sharedPreferences.getBoolean("isInit", false);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isInit", true);
         editor.apply();
-        boolean isInit = getResources().getBoolean(R.bool.db_initialized);
-        if (isInit)
-            return;
 
         MySQLiteHelper mySQLiteHelper = new MySQLiteHelper(this);
         ArrayList<Pigeon> pigeons = getAllPigeonData();
         mySQLiteHelper.addAllDataItem(pigeons);
     }
 
-    private ArrayList<Pigeon> getAllPigeonData() throws IOException {
+    private ArrayList<Pigeon> getAllPigeonData() throws IOException, NoSuchFieldException, IllegalAccessException {
         InputStream inputStream = getAssets().open("features64_blood.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         ArrayList<Pigeon> pigeons = new ArrayList<>();
         // 读取CSV文件内容
         String line;
+        Map<String, Integer> dic = new HashMap<>();
+        Field[] fields = R.drawable.class.getFields();
+        for (Field field : fields) {
+            String name = field.getName();
+            if (name.startsWith("a")) {
+                dic.put(name, field.getInt(null));
+            }
+        }
+
         while ((line = reader.readLine()) != null) {
             String[] values = line.split(",");
             Log.d("values ", Arrays.toString(values));
             // 解析特征向量
-            float[] feature = new float[values.length - 2];
-            Log.d("feature",feature.toString());
-            for (int i = 2; i < values.length; i++) {
-                feature[i - 2] = Float.parseFloat(values[i]);
-            }
+
             int imageId = Integer.parseInt(values[0]);
             String blood = values[1];
-            Drawable drawable = ResourcesCompat.getDrawable(getResources(), imageId, null);
+
+            if (!dic.containsKey("a" + imageId))
+                continue;
+
+            int resourceId = dic.get("a" + imageId);
+            Drawable drawable = ResourcesCompat.getDrawable(getResources(), resourceId, null);
             if (drawable == null)
                 continue;
             Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
@@ -104,6 +123,7 @@ public class MainActivity extends AppCompatActivity{
             pigeon.base64 = base64String;
 
             pigeons.add(pigeon);
+            Log.i("image id", "getAllPigeonData: a" + imageId);
         }
 
         return pigeons;

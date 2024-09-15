@@ -1,8 +1,14 @@
 package com.tencent.yolov5ncnn;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -37,6 +43,23 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public Drawable getDrawable(int imageId, Resources resources){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String SELECT_DATA = "SELECT * FROM pigeon WHERE id = " + imageId;
+        Drawable drawable = null;
+        try {
+            String base64 = db.rawQuery(SELECT_DATA, null).getString(2);
+            byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            drawable = new BitmapDrawable(resources, bitmap);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return drawable;
+    }
+
 
     private void addDataItem(SQLiteDatabase db, int imageId, String blood, String base64){
 
