@@ -1,0 +1,73 @@
+<!-- res/layout/activity_main.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/back_blur">
+
+    <!-- 左边的布局 -->
+
+
+
+    <LinearLayout
+        android:id="@+id/leftLayout"
+        android:layout_width="202dp"
+        android:layout_height="695dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/eye" />
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="215dp"
+            android:layout_height="84dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonSelectImage"
+                android:layout_width="101dp"
+                android:layout_height="65dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="选择图片" />
+
+            <TextView
+                android:id="@+id/textViewImageName"
+                android:layout_width="107dp"
+                android:layout_height="46dp"
+                android:text="未选择文件" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/uploadButtonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <!-- 上传按钮 -->
+            <Button
+                android:id="@+id/buttonUpload"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="上传" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-1dp"
+        android:layout_toRightOf="@id/leftLayout" />
+</RelativeLayout>

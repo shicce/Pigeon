@@ -1,0 +1,7 @@
+<resources>
+    <color name="colorPrimary">#98CAF3</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#E0F139</color>
+    <color name="windowBackground">#BCDCF6</color><!--  -->
+    <color name="yourDesiredColor">#000000</color> <!-- 状态栏颜色:手机最上方 -->
+</resources>

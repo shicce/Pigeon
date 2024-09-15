@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/back">
+
+    <Button
+        android:id="@+id/buttonIrishComparison"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="虹膜对比"
+        android:textSize="30sp"
+        android:textColor="#4E4D47"
+        android:padding="40dp"
+        android:background="#F4E7D2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonIrishRecognition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5"/>
+
+    <Button
+        android:id="@+id/buttonIrishRecognition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="虹膜识别"
+        android:background="#8B8D98"
+        android:textSize="30sp"
+        android:padding="40dp"
+        android:textColor="#31323A"
+        app:layout_constraintTop_toBottomOf="@+id/buttonIrishComparison"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
