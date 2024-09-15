@@ -5,6 +5,7 @@ import static com.tencent.yolov5ncnn.CompareActivity.assetFilePath;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -141,13 +142,21 @@ public class IdentifyActivity extends AppCompatActivity {
             Bird bird = birdList.get(position);
             int resourceId = holder.itemView.getContext().getResources().getIdentifier("a"+bird.getId(), "drawable", holder.itemView.getContext().getPackageName());
 
-            // 设置图片到 ImageView
-            if (resourceId != 0) {
-                holder.imageView.setImageResource(resourceId);
-            } else {
-                // 如果找不到资源，设置默认图片
-                holder.imageView.setImageResource(R.drawable.eye); // 替换成你的默认图片资源 ID
+            MySQLiteHelper helper = new MySQLiteHelper(holder.itemView.getContext());
+            Bitmap bitmap = helper.getBitmap(Integer.parseInt(bird.getId()));
+            if (bitmap == null){
+                holder.imageView.setImageResource(R.drawable.eye);
+            }else{
+                holder.imageView.setImageBitmap(bitmap);
             }
+            // 设置图片到 ImageView
+//            if (resourceId != 0) {
+//                holder.imageView.setImageBitmap();
+//                holder.imageView.setImageResource(resourceId);
+//            } else {
+//                // 如果找不到资源，设置默认图片
+//                holder.imageView.setImageResource(R.drawable.eye); // 替换成你的默认图片资源 ID
+//            }
             String displayText = "图片id:" +bird.getId() + "\n" +"血统:" + bird.getBlood() + "\n" +"相似度:"+ bird.getSimilarity();
             holder.textView.setText(displayText);
         }

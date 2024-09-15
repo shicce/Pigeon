@@ -2,6 +2,7 @@ package com.tencent.yolov5ncnn;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -60,6 +61,24 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return drawable;
     }
 
+    public Bitmap getBitmap(int imageId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String SELECT_DATA = "SELECT * FROM pigeon WHERE id = " + imageId;
+        Bitmap bitmap = null;
+        try {
+            Cursor cursor = db.rawQuery(SELECT_DATA, null);
+            String base64 = "";
+            if (cursor != null && cursor.moveToFirst()) {
+                base64 = cursor.getString(2);
+                // 其他操作
+            }
+            byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
 
     private void addDataItem(SQLiteDatabase db, int imageId, String blood, String base64){
 
